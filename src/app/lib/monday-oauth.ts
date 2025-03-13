@@ -73,7 +73,7 @@ const mondayClient = {
     getUserEmail: async () => {
         const token = await mondayClient.getAccessToken();
         if (!token) {
-            throw new Error('No access token found');
+           return ''
         }
 
         const response = await fetch('https://api.monday.com/v2', {
