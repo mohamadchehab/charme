@@ -22,6 +22,7 @@ export const mailTool = createTool({
         toolCallId,
         status: 'in-progress',
       });
+      console.log(data)
       // Fetch the last 10 emails
       const response = await gmail.users.messages.list({
         userId: 'me',
@@ -38,7 +39,7 @@ export const mailTool = createTool({
           id: emailId.id || '',
           format: 'full'
         });
-       
+        console.log(message)
         // Extract email headers for sender, subject and date
         const headers = message.data.payload?.headers || [];
         const sender = headers.find(h => h.name === 'From')?.value || 'Unknown Sender';
@@ -49,13 +50,15 @@ export const mailTool = createTool({
         const emailContent = message.data.snippet || '';
         
         emails.push({
+          id: message.data.id,
+          unread: message.data?.labelIds?.includes("UNREAD"),
           sender,
           subject,
           snippet: emailContent,
           date
         });
       }
-
+data.close()
       return {emails}
     } catch (error) {
       console.error('Error accessing email:', error);

@@ -91,8 +91,9 @@ export default function Home() {
                   <div className="text-sm text-zinc-500">{message.role}</div>
                 </div>
              
-              
-                {message.parts?.map((part, i) => {
+              {/* Only show text parts if there are no tool invocations with results */}
+              {(!message.toolInvocations || !message.toolInvocations.some(tool => tool.state === 'result')) && 
+                message.parts?.map((part, i) => {
                   if (part.type === 'text') {
                     // Filter out any base64 image data from the text
                     const formattedText = part.text

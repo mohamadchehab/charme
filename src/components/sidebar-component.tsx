@@ -95,7 +95,7 @@ export function AppSidebar() {
                   <SidebarMenuItem 
                     key={chat.id}
                     className={cn(
-                      "flex justify-between items-center group cursor-pointer",
+                      "flex justify-between items-center group",
                       "hover:bg-accent/50 transition-colors duration-200",
                       "rounded-lg px-2 py-1.5 my-0.5",
                       chat.id === currentChatId && "bg-accent"
@@ -116,10 +116,10 @@ export function AppSidebar() {
                       <Button 
                         variant="ghost" 
                         size="icon"
-                        className="h-6 w-6 md:opacity-0 md:group-hover:opacity-100 transition-all duration-200 hover:bg-destructive/10"
+                        className="h-6 w-6 md:opacity-0 md:group-hover:opacity-100 transition-all duration-200 hover:bg-destructive/10 "
                         onClick={(e) => handleDeleteThread(chat.id, e)}
                       >
-                        <Trash2 className="h-3 w-3 text-destructive" />
+                        <Trash2 className="h-3 w-3 text-red-500" />
                       </Button>
                     </div>
                   </SidebarMenuItem>
