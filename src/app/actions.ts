@@ -5,6 +5,8 @@ import oauth2Client from "@/app/lib/google-oauth";
 import { togetherai } from '@ai-sdk/togetherai';
 
 import { experimental_generateImage } from "ai";
+import { google } from "googleapis";
+import { cookies } from "next/headers";
 const API_KEY = process.env.GOOGLE_API_KEY;
 
 
@@ -33,13 +35,30 @@ export async function runImage(topic: string): Promise<string> {
 
 
 export async function getUserEmail() {
-  try {
-    const tokenInfo = await oauth2Client.getTokenInfo(
-      oauth2Client.credentials.access_token as string
-    );
-    return tokenInfo.email || '';
-  } catch (error) {
-    console.error('Error getting user email:', error);
-    return '';
-  }
+
+    try {
+      const cookieStore = await cookies();
+      const accessToken = cookieStore.get("google_access_token")?.value;
+      oauth2Client.setCredentials({ access_token: accessToken });
+      const peopleService =  google.people({ version: 'v1', auth: oauth2Client });
+
+        
+  const res = await peopleService.people.get({
+    resourceName: 'people/me',
+    personFields: 'emailAddresses',
+    });
+    
+    const emailAddresses = res.data.emailAddresses;
+    
+    if (emailAddresses && emailAddresses.length > 0) {
+    return emailAddresses[0].value;
+    } else {
+    return null;
+    }
+    } catch (error) {
+      console.error('Error getting user email:', error);
+      return '';
+    }
+  
+ 
 } 

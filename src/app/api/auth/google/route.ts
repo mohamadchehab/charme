@@ -4,10 +4,9 @@ import oauth2Client from "@/app/lib/google-oauth";
 export async function GET() {
   try {
     const SCOPE = [
-      "https://www.googleapis.com/auth/gmail.readonly",
-      "https://www.googleapis.com/auth/gmail.modify",
-      "https://www.googleapis.com/auth/gmail.compose",
-      "https://www.googleapis.com/auth/gmail.send",
+      "https://www.googleapis.com/auth/userinfo.email",
+      "https://www.googleapis.com/auth/userinfo.profile",
+      "https://www.googleapis.com/auth/gmail.readonly"
     ];
 
     const authUrl = oauth2Client.generateAuthUrl({

@@ -26,7 +26,11 @@ export const EmailSummarizer = ({ emails }: EmailSummarizerToolProps) => {
   useEffect(() => {
     const fetchUserEmail = async () => {
       const email = await getUserEmail()
-      setUserEmail(email);
+      if(email && email != '') {
+        console.log(email)
+        setUserEmail(email);
+      }
+
     };
     
     fetchUserEmail();

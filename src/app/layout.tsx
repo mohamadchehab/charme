@@ -6,6 +6,8 @@ import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ModeToggle } from "@/components/mode-toggle";
 import { SidebarGoogleLogin } from "@/components/sidebar-google-login";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -44,10 +46,15 @@ export default function RootLayout({
       <main className="w-full">
         <div className=" flex justify-between m-4">
           <SidebarTrigger />
-          <SidebarGoogleLogin />
-          <ModeToggle />
+          <div className="flex items-center gap-2">
+            <Link href="/integrations">
+            <Button variant={'outline'}>Integrations</Button>
+            </Link>
+ 
+            <ModeToggle />
+         {/*  <SidebarGoogleLogin /> */}
+          </div>
         </div>
-
         {children}
       </main>
     </SidebarProvider>
