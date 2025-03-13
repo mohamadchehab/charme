@@ -222,10 +222,6 @@ export const weatherTool = createTool({
   },
 });
 
-const summarizeMailSchema = z.object({
-  messageId: z.string().describe("The Gmail message ID to summarize"),
-});
-
 export const tools = {
   generateImage: imageGenerationTool,
   displayWeather: weatherTool,
