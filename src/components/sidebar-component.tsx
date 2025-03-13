@@ -15,6 +15,7 @@ import { Button } from "./ui/button";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import useChatsStore from "@/app/lib/state";
+import { SidebarGoogleLogin } from "./sidebar-google-login";
 
 
 export function AppSidebar() {
@@ -86,7 +87,7 @@ export function AppSidebar() {
             <Plus className="h-5 w-5" />
           </Button>
         </div>
-        
+
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu>

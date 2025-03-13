@@ -1,7 +1,70 @@
 import { runGemini } from '@/app/actions';
-import { tool as createTool } from 'ai';
+import oauth2Client from '@/app/lib/google-oauth';
+import { tool as createTool, StreamData } from 'ai';
 import { z } from 'zod';
+import { google } from "googleapis";
+import { cookies } from 'next/headers';
+export const mailTool = createTool({
+  description: 'Summarize emails (e.g: ask user to login if not logged in',
+  parameters: z.object({
+    provider: z.string(), 
+  }),
+  execute: async function (args, {toolCallId}) {
+    const data = new StreamData();
+    try {
+      const cookieStore = await cookies();
+      const accessToken = cookieStore.get("google_access_token")?.value;
+      oauth2Client.setCredentials({ access_token: accessToken });
+      const gmail = google.gmail({ version: 'v1', auth: oauth2Client });
+      data.appendMessageAnnotation({
+        type: 'tool-status',
+        toolCallId,
+        status: 'in-progress',
+      });
+      // Fetch the last 10 emails
+      const response = await gmail.users.messages.list({
+        userId: 'me',
+        maxResults: 10
+      });
+      console.log(response.data.messages)
+      const emailIds = response.data.messages || [];
+      const emails = [];
+      
+      // Get the content of each email
+      for (const emailId of emailIds) {
+        const message = await gmail.users.messages.get({
+          userId: 'me',
+          id: emailId.id || '',
+          format: 'full'
+        });
+       
+        // Extract email headers for sender, subject and date
+        const headers = message.data.payload?.headers || [];
+        const sender = headers.find(h => h.name === 'From')?.value || 'Unknown Sender';
+        const subject = headers.find(h => h.name === 'Subject')?.value || 'No Subject';
+        const date = headers.find(h => h.name === 'Date')?.value || '';
+        
+        // Extract the email content
+        const emailContent = message.data.snippet || '';
+        
+        emails.push({
+          sender,
+          subject,
+          snippet: emailContent,
+          date
+        });
+      }
 
+      return {emails}
+    } catch (error) {
+      console.error('Error accessing email:', error);
+      return {
+        status: 'error',
+        message: `Failed to access emails: ${error instanceof Error ? error.message : String(error)}`
+      };
+    }
+  }
+})
 
 export const imageGenerationTool = createTool({
   description: 'Generate an image',
@@ -159,9 +222,14 @@ export const weatherTool = createTool({
   },
 });
 
+const summarizeMailSchema = z.object({
+  messageId: z.string().describe("The Gmail message ID to summarize"),
+});
+
 export const tools = {
   generateImage: imageGenerationTool,
   displayWeather: weatherTool,
   calculate: calculatorTool,
-  define: dictionaryTool
+  define: dictionaryTool,
+  summarizeMail: mailTool
 };

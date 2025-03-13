@@ -12,6 +12,7 @@ import { Calc } from '@/components/calculator';
 import { WordDefinition } from '@/components/word-definition';
 import { WebSearchResult } from '@/components/web-search-result';
 import { ImageDisplay } from '@/components/image-display';
+import { EmailSummarizer } from '@/components/email-summarizer';
 
 export default function Home() {
   const [loading] = useState(false);
@@ -79,6 +80,7 @@ export default function Home() {
 
   return (
     <div className="flex flex-col h-screen">
+      
       {/* Messages section with its own scrollable area */}
       <div className="flex-1 overflow-hidden">
         <div className="h-full overflow-y-auto" style={{ maxHeight: 'calc(100vh - 140px)' }}>
@@ -167,6 +169,10 @@ export default function Home() {
                             <ImageDisplay image={result.image} />
                           </div>
                         );
+                      } else if(toolName === "summarizeMail") {
+                        const { result } = toolInvocation;
+                  
+                        return <EmailSummarizer  emails={result.emails}/>
                       }
                     } 
                     
