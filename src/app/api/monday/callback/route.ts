@@ -1,6 +1,10 @@
 import { NextResponse } from "next/server";
 import mondayClient from "@/app/lib/monday-oauth";
 
+const redirectUri = process.env.NODE_ENV === 'production' 
+  ? process.env.MONDAY_PROD_REDIRECT_URI 
+  : process.env.MONDAY_DEV_REDIRECT_URI 
+
 export async function GET(req: Request) {
     const { searchParams } = new URL(req.url);
     const code = searchParams.get('code');
@@ -27,7 +31,7 @@ export async function GET(req: Request) {
                 client_id: process.env.MONDAY_CLIENT_ID,
                 client_secret: process.env.MONDAY_CLIENT_SECRET,
                 code: code,
-                redirect_uri: process.env.MONDAY_REDIRECT_URI
+                redirect_uri: redirectUri
             })
         });
 

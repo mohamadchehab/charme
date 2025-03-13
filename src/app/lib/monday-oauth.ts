@@ -1,5 +1,10 @@
 import { cookies } from 'next/headers';
 
+
+const redirectUri = process.env.NODE_ENV === 'production' 
+  ? process.env.MONDAY_PROD_REDIRECT_URI 
+  : process.env.MONDAY_DEV_REDIRECT_URI;
+
 // Monday.com OAuth client for managing access tokens
 const mondayClient = {
     /**
@@ -89,6 +94,15 @@ const mondayClient = {
         const data = await response.json();
         return data.data.me.email;
     }
+};
+
+export const getMondayAuthUrl = () => {
+  const params = new URLSearchParams({
+    client_id: process.env.MONDAY_CLIENT_ID!,
+    redirect_uri: redirectUri!
+  });
+
+  return `https://auth.monday.com/oauth2/authorize?${params.toString()}`;
 };
 
 export default mondayClient;
