@@ -5,7 +5,6 @@ import { AppSidebar } from "@/components/sidebar-component";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ModeToggle } from "@/components/mode-toggle";
-import { SidebarGoogleLogin } from "@/components/sidebar-google-login";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 

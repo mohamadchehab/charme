@@ -3,13 +3,13 @@
 import { Button } from '@/components/ui/button';
 import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
-import oauth2Client from '../lib/google-oauth';
 import { SidebarGoogleLogin } from '@/components/sidebar-google-login';
 import { getUserEmail } from '../actions';
+import DisconnectButton from '@/components/disconnect-button';
 
 const Integrations = async () => {
    let userEmail = await getUserEmail()
-  console.log('email: ', userEmail)
+
     return (
         <div className='mx-8'>
             <div className="flex items-center mb-6 ">
@@ -30,7 +30,7 @@ const Integrations = async () => {
                     </div>
                 </div>
                 {userEmail != '' ? (
-                    <Button variant="outline" >Disconnect</Button>
+                  <DisconnectButton />
                 ) : (
                 <SidebarGoogleLogin />
                 )}
