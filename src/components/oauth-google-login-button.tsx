@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Button } from "./ui/button";
 import oauth2Client from "@/app/lib/google-oauth";
 
-export function SidebarGoogleLogin() {
+export function OAuthGoogleLoginButton() {
     const SCOPE = [
         "https://www.googleapis.com/auth/userinfo.email",
         "https://www.googleapis.com/auth/userinfo.profile",
@@ -17,7 +17,7 @@ export function SidebarGoogleLogin() {
   return (
     <Link href={authUrl}>
     <Button
-
+className="cursor-pointer"
       variant="outline"
 
     >

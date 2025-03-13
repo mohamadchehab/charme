@@ -5,6 +5,167 @@ import { z } from 'zod';
 import { google } from "googleapis";
 import { cookies } from 'next/headers';
 import { runImage } from '@/app/actions';
+import mondayClient from '@/app/lib/monday-oauth';
+
+// Monday.com API helper function
+async function mondayApiRequest(query: string, variables = {}) {
+  const token = await mondayClient.getAccessToken()
+  const response = await fetch("https://api.monday.com/v2", {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `${token}`
+    },
+    body: JSON.stringify({
+      query,
+      variables
+    })
+  });
+  return response.json();
+}
+
+export const mondayToolsTool = createTool({
+  description: 'Returns a list of possible tools or actions to use for Monday CRM',
+  parameters: z.object({}),
+  execute: async function () {
+    return {
+      tools: [
+        "Get list of boards",
+        "Create a new board",
+        "Create a new item in a board",
+      ]
+    };
+  }
+})
+export const mondayBoardsTool = createTool({
+  description: 'Get list of Monday.com boards',
+  parameters: z.object({}),
+  execute: async function () {
+    try {
+      const query = `query { boards { 
+        id
+        name
+        description
+        board_kind
+        state
+        board_folder_id
+        permissions
+        items_count
+        tags {
+          color
+        }
+        workspace {
+          name
+        }
+        updated_at
+        communication
+        type
+        url
+        item_terminology
+        creator {
+          id
+          name
+        }
+        owners {
+          id
+          name
+        }
+        subscribers {
+          id
+          name
+        }
+        team_owners {
+          id
+          name
+        }
+        team_subscribers {
+          id
+          name
+        }
+      } }`;
+      const data = await mondayApiRequest(query);
+      
+      return {
+        boards: data.data.boards
+      };
+    } catch (error) {
+      return {
+        error: `Failed to fetch boards: ${error instanceof Error ? error.message : String(error)}`
+      };
+    }
+  }
+});
+
+export const mondayCreateBoardTool = createTool({
+  description: 'Create a new board in Monday.com',
+  parameters: z.object({
+    boardName: z.string().describe('Name of the new board'),
+    boardKind: z.string().optional().describe('Kind of board (public/private/share)').default('public'),
+    templateId: z.number().optional().describe('Template ID to create board from')
+  }),
+  execute: async function ({ boardName, boardKind, templateId }) {
+    try {
+      const query = `mutation($boardName: String!, $boardKind: BoardKind!, $templateId: Int) {
+        create_board(board_name: $boardName, board_kind: $boardKind, template_id: $templateId) {
+          id
+          name 
+          board_kind
+        }
+      }`;
+
+      const variables = {
+        boardName,
+        boardKind: boardKind.toUpperCase(),
+        templateId
+      };
+
+      const data = await mondayApiRequest(query, variables);
+      return {
+        board: data.data.create_board
+      };
+    } catch (error) {
+      return {
+        error: `Failed to create board: ${error instanceof Error ? error.message : String(error)}`
+      };
+    }
+  }
+});
+
+
+export const mondayCreateItemTool = createTool({
+  description: 'Create a new item in a Monday.com board',
+  parameters: z.object({
+    boardId: z.string().describe('The ID of the board'),
+    itemName: z.string().describe('Name of the new item'),
+    columnValues: z.string().optional().describe('JSON string of column values')
+  }),
+  execute: async function ({ boardId, itemName, columnValues }) {
+    try {
+      const query = `mutation($boardId: ID!, $itemName: String!, $columnValues: JSON) {
+        create_item(board_id: $boardId, item_name: $itemName, column_values: $columnValues) {
+          id
+          name
+        }
+      }`;
+      
+      const variables = {
+        boardId,
+        itemName,
+        columnValues: columnValues ? JSON.parse(columnValues) : null
+      };
+
+      const data = await mondayApiRequest(query, variables);
+      return {
+        item: data.data.create_item
+      };
+    } catch (error) {
+      return {
+        error: `Failed to create item: ${error instanceof Error ? error.message : String(error)}`
+      };
+    }
+  }
+});
+
 export const mailTool = createTool({
   description: 'Summarize emails (e.g: ask user to login if not logged in',
   parameters: z.object({
@@ -231,5 +392,7 @@ export const tools = {
   displayWeather: weatherTool,
   calculate: calculatorTool,
   define: dictionaryTool,
-  summarizeMail: mailTool
+  summarizeMail: mailTool,
+  showMondayActions: mondayToolsTool,
+  showMondayBoards: mondayBoardsTool
 };

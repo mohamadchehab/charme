@@ -5,6 +5,7 @@ import { AppSidebar } from "@/components/sidebar-component";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ModeToggle } from "@/components/mode-toggle";
+
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
@@ -43,11 +44,11 @@ export default function RootLayout({
   <SidebarProvider>
       <AppSidebar />
       <main className="w-full">
-        <div className=" flex justify-between m-4">
-          <SidebarTrigger />
+        <div className=" flex justify-between m-4 ">
+          <SidebarTrigger className="cursor-pointer" />
           <div className="flex items-center gap-2">
-            <Link href="/integrations">
-            <Button variant={'outline'}>Integrations</Button>
+            <Link href="/integrations" >
+            <Button variant={'outline'} className="cursor-pointer">Integrations</Button>
             </Link>
  
             <ModeToggle />

@@ -13,6 +13,7 @@ import { WordDefinition } from '@/components/word-definition';
 import { WebSearchResult } from '@/components/web-search-result';
 import { ImageDisplay } from '@/components/image-display';
 import { EmailSummarizer } from '@/components/email-summarizer';
+import MondayBoards from '@/components/monday-boards';
 
 export default function Home() {
   const [loading] = useState(false);
@@ -43,16 +44,10 @@ export default function Home() {
     }
   }, []);
 
-  // Create a new chat if there isn't one
-  useEffect(() => {
-    if (!currentChatId) {
-      createChat();
-    }
-  }, [currentChatId, createChat]);
 
   // Scroll to bottom when messages change
   useEffect(() => {
-    if (messagesEndRef.current) {
+    if (messagesEndRef.current && messages.length > 0) {
       messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   }, [messages]);
@@ -83,7 +78,7 @@ export default function Home() {
       
       {/* Messages section with its own scrollable area */}
       <div className="flex-1 overflow-hidden">
-        <div className="h-full overflow-y-auto" style={{ maxHeight: 'calc(100vh - 140px)' }}>
+        <div className="h-full overflow-y-auto" style={{ maxHeight: 'calc(100vh - 25px)' }}>
           <div className="flex flex-col overflow-scroll">
             {messages.map(message => (
               <div key={message.id} className="flex flex-col gap-1 border-b p-2">
@@ -174,6 +169,30 @@ export default function Home() {
                         const { result } = toolInvocation;
                   
                         return <EmailSummarizer key={toolCallId} emails={result.emails}/>
+                      } else if (toolName === "showMondayActions") {
+                        const {result } = toolInvocation
+
+                        return (
+                          <div className="flex flex-wrap gap-2">
+                            {result.tools.map((tool: string) => (
+                              <Button
+                                key={tool}
+                               variant={'outline'}
+                               className='cursor-pointer'
+                                onClick={() => {
+                                  handleInputChange({ target: { value: tool } } as React.ChangeEvent<HTMLInputElement>);
+                                  handleSubmitWithTools(new Event('submit') as any);
+                                }}
+                              >
+                                {tool}
+                              </Button>
+                            ))}
+                          </div>
+                        )
+                      } else if (toolName === "showMondayBoards") {
+                        const {result } = toolInvocation
+  
+                        return <MondayBoards boards={result.boards} />
                       }
                     } 
                     
@@ -202,7 +221,7 @@ export default function Home() {
             <div className="pl-3 flex items-center gap-2">
               <button 
                 type="button"
-                className="text-gray-500 hover:text-gray-700 transition-colors p-2"
+                className="cursor-pointer text-gray-500 hover:text-gray-700 transition-colors p-2"
                 aria-label="Attach file"
               >
                 <PaperclipIcon className="h-5 w-5" />
@@ -210,7 +229,7 @@ export default function Home() {
               <button
                 type="button"
                 onClick={() => setWebSearchEnabled(!webSearchEnabled)}
-                className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-full transition-colors ${
+                className={`inline-flex cursor-pointer items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-full transition-colors ${
                   webSearchEnabled 
                     ? 'bg-primary text-primary-foreground hover:bg-primary/90' 
                     : 'bg-muted text-muted-foreground hover:bg-muted/90'
@@ -244,7 +263,7 @@ export default function Home() {
               type="submit"
               disabled={loading || !input.trim()}
               size="sm"
-              className="h-9 w-9 rounded-full p-0 flex items-center justify-center mr-3"
+              className="cursor-pointer h-9 w-9 rounded-full p-0 flex items-center justify-center mr-3"
             >
               <SendIcon className="h-4 w-4" />
             </Button>
