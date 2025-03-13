@@ -91,10 +91,7 @@ export function AppSidebar() {
           <SidebarGroupContent>
             <SidebarMenu>
               {chats.map(chat => {
-                const updatedAt = chat.messages.length > 0 
-                  ? new Date(chat.messages[chat.messages.length - 1].createdAt || Date.now()) 
-                  : new Date();
-                
+    
                 return (
                   <SidebarMenuItem 
                     key={chat.id}
