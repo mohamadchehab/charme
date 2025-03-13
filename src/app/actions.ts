@@ -33,6 +33,9 @@ export async function runImage(topic: string): Promise<string> {
   }
 }
 
+export async function disconnect() {
+ await oauth2Client.revokeCredentials()
+}
 
 export async function getUserEmail() {
 

@@ -1,10 +1,14 @@
-'use client'
-import oauth2Client from "@/app/lib/google-oauth"
+
+
 import { Button } from "./ui/button"
+import { disconnect } from "@/app/actions"
 
 const DisconnectButton = () => {
+    
     return (
-        <Button onClick={() => oauth2Client.revokeCredentials()} variant='outline'>Disconnect</Button>
+        <form action={disconnect}>
+        <Button  variant='outline'>Disconnect</Button>
+        </form>
     )
 }
 
