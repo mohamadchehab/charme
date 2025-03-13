@@ -1,22 +1,21 @@
 'use client';
 
-import { useEffect, useState } from "react";
-import { Calendar, Home, Inbox, MessageSquare, Plus, Search, Settings, Trash2 } from "lucide-react";
+import { Plus, Trash2 } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
   SidebarGroup,
   SidebarGroupContent,
-  SidebarGroupLabel,
+
   SidebarMenu,
-  SidebarMenuButton,
+
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { Button } from "./ui/button";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import useChatsStore from "@/app/lib/state";
-import { UIMessage } from "ai";
+
 
 export function AppSidebar() {
   const { chats, currentChatId, createChat, setCurrentChat, getChatById } = useChatsStore();

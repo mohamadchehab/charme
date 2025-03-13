@@ -1,24 +1,22 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { useActions } from 'ai/rsc';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { PaperclipIcon, SendIcon } from 'lucide-react';
-import { Message, useChat } from '@ai-sdk/react';
+import { useChat } from '@ai-sdk/react';
 import { Weather } from '@/components/weather';
 import useChatsStore from '@/app/lib/state';
 import { UIMessage } from 'ai';
 import { Calc } from '@/components/calculator';
 import { WordDefinition } from '@/components/word-definition';
 import { WebSearchResult } from '@/components/web-search-result';
-import { openai } from '@ai-sdk/openai';
 import { ImageDisplay } from '@/components/image-display';
 
 export default function Home() {
-  const [loading, setLoading] = useState(false);
+  const [loading] = useState(false);
   const [webSearchEnabled, setWebSearchEnabled] = useState(false);
-  const { chats, currentChatId, createChat, addMessage, setCurrentChat } = useChatsStore();
+  const { chats, currentChatId, createChat, addMessage } = useChatsStore();
 
   const { messages, input, handleInputChange, handleSubmit } = useChat({
     id: currentChatId || undefined,
