@@ -172,7 +172,7 @@ export default function Home() {
                       } else if(toolName === "summarizeMail") {
                         const { result } = toolInvocation;
                   
-                        return <EmailSummarizer  emails={result.emails}/>
+                        return <EmailSummarizer key={toolCallId} emails={result.emails}/>
                       }
                     } 
                     
