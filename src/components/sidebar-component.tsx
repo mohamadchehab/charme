@@ -15,8 +15,6 @@ import { Button } from "./ui/button";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import useChatsStore from "@/app/lib/state";
-import { SidebarGoogleLogin } from "./sidebar-google-login";
-
 
 export function AppSidebar() {
   const { chats, currentChatId, createChat, setCurrentChat, getChatById } = useChatsStore();
