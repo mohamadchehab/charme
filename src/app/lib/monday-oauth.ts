@@ -15,7 +15,7 @@ const mondayClient = {
         const token = cookieStore.get('monday_access_token');
         
         if (!token) {
-            throw new Error('No Monday.com access token found');
+            return ''
         }
         
         return token.value;
