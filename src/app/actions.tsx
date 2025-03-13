@@ -4,7 +4,7 @@ import { experimental_generateImage } from "ai";
 const API_KEY = process.env.GOOGLE_API_KEY;
 
 
-export async function runGemini(topic: string): Promise<string> {
+export async function runImage(topic: string): Promise<string> {
   if (!API_KEY) {
     console.error("API key not found in environment variables.");
     return '';

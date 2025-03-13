@@ -4,6 +4,7 @@ import { tool as createTool, StreamData } from 'ai';
 import { z } from 'zod';
 import { google } from "googleapis";
 import { cookies } from 'next/headers';
+import { runImage } from '@/app/actions';
 export const mailTool = createTool({
   description: 'Summarize emails (e.g: ask user to login if not logged in',
   parameters: z.object({
@@ -73,7 +74,7 @@ export const imageGenerationTool = createTool({
 }),
 execute: async function ({ topic }) {
   try {
-    const image = await runGemini(topic)
+    const image = await runImage(topic)
 
     return {image: image}
   } catch (error) {
