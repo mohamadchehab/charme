@@ -11,7 +11,7 @@ const Integrations = async () => {
    const userEmail = await getUserEmail()
 
     return (
-        <div className='mx-8'>
+        <div className='mx-4'>
             <div className="flex items-center mb-6 ">
                 <Link href="/">
                     <Button variant="ghost" size="icon" className="mr-2">
