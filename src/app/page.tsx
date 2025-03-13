@@ -191,9 +191,10 @@ export default function Home() {
       {/* Input section with fixed position at bottom */}
       <div className="sticky bottom-0 right-0 bg-background border-t shadow-lg">
         <div className="p-4">
-          <div className="flex items-center relative rounded-lg border overflow-hidden shadow-md">
+          <form onSubmit={handleSubmitWithTools} className="flex items-center relative rounded-lg border overflow-hidden shadow-md">
             <div className="pl-3 flex items-center gap-2">
               <button 
+                type="button"
                 className="text-gray-500 hover:text-gray-700 transition-colors p-2"
                 aria-label="Attach file"
               >
@@ -202,7 +203,7 @@ export default function Home() {
               <button
                 type="button"
                 onClick={() => setWebSearchEnabled(!webSearchEnabled)}
-                className={`inline-flex w-[115px] items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-full transition-colors ${
+                className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-full transition-colors ${
                   webSearchEnabled 
                     ? 'bg-primary text-primary-foreground hover:bg-primary/90' 
                     : 'bg-muted text-muted-foreground hover:bg-muted/90'
@@ -222,28 +223,25 @@ export default function Home() {
                   <circle cx="11" cy="11" r="8" />
                   <path d="m21 21-4.3-4.3" />
                 </svg>
-                Web Search
+                <span className="hidden md:inline">Web Search</span>
               </button>
             </div>
             <Input
               ref={inputRef}
-              className="border-0 shadow-none focus-visible:ring-0 focus-visible:ring-offset-0 py-6 px-3"
+              className="border-0 shadow-none focus-visible:ring-0 focus-visible:ring-offset-0 py-6 px-3 flex-1"
               value={input}
               onChange={handleInputChange}
               placeholder={webSearchEnabled ? "Ask anything (with web search)" : "Ask a question"}
             />
-            <div className="absolute right-3">
-              <form onSubmit={handleSubmitWithTools}>
-                <Button 
-                  disabled={loading || !input.trim()}
-                  size="sm"
-                  className="h-9 w-9 rounded-full p-0 flex items-center justify-center"
-                >
-                  <SendIcon className="h-4 w-4" />
-                </Button>
-              </form>
-            </div>
-          </div>
+            <Button 
+              type="submit"
+              disabled={loading || !input.trim()}
+              size="sm"
+              className="h-9 w-9 rounded-full p-0 flex items-center justify-center mr-3"
+            >
+              <SendIcon className="h-4 w-4" />
+            </Button>
+          </form>
         </div>
       </div>
     </div>
