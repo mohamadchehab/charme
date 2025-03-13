@@ -1,9 +1,7 @@
 import { togetherai } from '@ai-sdk/togetherai';
-import {GoogleGenAI} from '@google/genai';
+
 import { experimental_generateImage } from "ai";
 const API_KEY = process.env.GOOGLE_API_KEY;
-
-const ai = new GoogleGenAI({apiKey: API_KEY});
 
 
 export async function runGemini(topic: string): Promise<string> {
