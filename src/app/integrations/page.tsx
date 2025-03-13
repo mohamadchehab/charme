@@ -8,7 +8,7 @@ import { getUserEmail } from '../actions';
 import DisconnectButton from '@/components/disconnect-button';
 
 const Integrations = async () => {
-   let userEmail = await getUserEmail()
+   const userEmail = await getUserEmail()
 
     return (
         <div className='mx-8'>
