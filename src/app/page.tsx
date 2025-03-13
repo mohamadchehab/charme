@@ -18,7 +18,7 @@ import MondayBoards from '@/components/monday-boards';
 export default function Home() {
   const [loading] = useState(false);
   const [webSearchEnabled, setWebSearchEnabled] = useState(false);
-  const { chats, currentChatId, createChat, addMessage } = useChatsStore();
+  const { chats, currentChatId, addMessage } = useChatsStore();
 
   const { messages, input, handleInputChange, handleSubmit } = useChat({
     id: currentChatId || undefined,
@@ -181,7 +181,7 @@ export default function Home() {
                                className='cursor-pointer'
                                 onClick={() => {
                                   handleInputChange({ target: { value: tool } } as React.ChangeEvent<HTMLInputElement>);
-                                  handleSubmitWithTools(new Event('submit') as any);
+                                
                                 }}
                               >
                                 {tool}
