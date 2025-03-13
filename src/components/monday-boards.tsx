@@ -25,7 +25,6 @@ interface Board {
   };
   workspace_id?: string;
   updated_at?: string;
-  communication?: any; // JSON type
   type?: 'board' | 'custom_object' | 'document' | 'sub_items_board';
   url: string;
   item_terminology?: string;

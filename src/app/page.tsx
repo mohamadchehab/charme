@@ -173,7 +173,7 @@ export default function Home() {
                         const {result } = toolInvocation
 
                         return (
-                          <div className="flex flex-wrap gap-2">
+                          <div key={Math.random()} className="flex flex-wrap gap-2">
                             {result.tools.map((tool: string) => (
                               <Button
                                 key={tool}
@@ -192,7 +192,7 @@ export default function Home() {
                       } else if (toolName === "showMondayBoards") {
                         const {result } = toolInvocation
   
-                        return <MondayBoards boards={result.boards} />
+                        return <MondayBoards key={Math.random()} boards={result.boards} />
                       }
                     } 
                     
