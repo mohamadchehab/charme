@@ -53,12 +53,6 @@ export function AppSidebar() {
     }
   };
 
-  // Format date for display
-  const formatDate = (date: Date | undefined) => {
-    if (!date) return '';
-    return date.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
-  };
-
   // Get chat title with message preview
   const getChatTitle = (chatId: string) => {
     const chat = getChatById(chatId);
