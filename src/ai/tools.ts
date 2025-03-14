@@ -95,31 +95,45 @@ export const mondayBoardsTool = createTool({
     }
   }
 });
-
 export const mondayCreateBoardTool = createTool({
   description: 'Create a new board in Monday.com',
   parameters: z.object({
-    boardName: z.string().describe('Name of the new board'),
-    boardKind: z.string().optional().describe('Kind of board (public/private/share)').default('public'),
-    templateId: z.number().optional().describe('Template ID to create board from')
+    name: z.string().describe('Name of the new board'),
+    boardKind: z.enum(['private', 'public', 'share']).describe('Kind of board to create - can be private, public or share'),
+    description: z.string().describe('Description of the board')
   }),
-  execute: async function ({ boardName, boardKind, templateId }) {
+  execute: async function ({ name, boardKind, description }) {
     try {
-      const query = `mutation($boardName: String!, $boardKind: BoardKind!, $templateId: Int) {
-        create_board(board_name: $boardName, board_kind: $boardKind, template_id: $templateId) {
+      const query = `mutation($name: String!, $boardKind: BoardKind!, $description: String) {
+        create_board(board_name: $name, board_kind: $boardKind, description: $description) {
           id
           name 
           board_kind
+          description
+          state
+          board_folder_id
+          workspace {
+            name
+          }
+          creator {
+            id
+            name
+          }
         }
       }`;
 
       const variables = {
-        boardName,
-        boardKind: boardKind.toUpperCase(),
-        templateId
+        name,
+        boardKind, // boardKind is required so no need for || undefined
+        description: description || undefined
       };
 
       const data = await mondayApiRequest(query, variables);
+      console.log(data)
+      if (!data?.data?.create_board) {
+        throw new Error('Failed to create board - invalid response from Monday.com API');
+      }
+
       return {
         board: data.data.create_board
       };
@@ -386,13 +400,13 @@ export const weatherTool = createTool({
     }
   },
 });
-
 export const tools = {
   generateImage: imageGenerationTool,
   displayWeather: weatherTool,
   calculate: calculatorTool,
   define: dictionaryTool,
   summarizeMail: mailTool,
-  showMondayActions: mondayToolsTool,
-  showMondayBoards: mondayBoardsTool
+   showMondayActions: mondayToolsTool,
+  showMondayBoards: mondayBoardsTool, 
+  createMondayBoard:mondayCreateBoardTool
 };

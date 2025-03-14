@@ -14,6 +14,7 @@ import { WebSearchResult } from '@/components/web-search-result';
 import { ImageDisplay } from '@/components/image-display';
 import { EmailSummarizer } from '@/components/email-summarizer';
 import MondayBoards from '@/components/monday-boards';
+import CreateBoard from '@/components/create-board';
 
 export default function Home() {
   const [loading] = useState(false);
@@ -193,6 +194,10 @@ export default function Home() {
                         const {result } = toolInvocation
   
                         return <MondayBoards key={Math.random()} boards={result.boards} />
+                      } else if(toolName === "createMondayBoard") {
+                        const {result} = toolInvocation
+                        console.log(result.board)
+                        return <CreateBoard board={result.board} />
                       }
                     } 
                     

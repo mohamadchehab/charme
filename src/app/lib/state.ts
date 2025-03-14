@@ -26,7 +26,7 @@ const useChatsStore = create<ChatsState>()(
         createChat: () => {
           const newChatId = uuidv4()
           set((state) => ({
-            chats: [...state.chats, { id: newChatId, messages: [] }],
+            chats: [{ id: newChatId, messages: [] },...state.chats],
             currentChatId: newChatId
           }))
           return newChatId
