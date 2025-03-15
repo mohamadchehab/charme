@@ -48,7 +48,7 @@ export default function Home() {
 
   // Scroll to bottom when messages change
   useEffect(() => {
-    if (messagesEndRef.current && messages.length > 0) {
+    if (messagesEndRef.current) {
       messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   }, [messages]);
