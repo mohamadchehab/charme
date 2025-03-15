@@ -197,7 +197,7 @@ export default function Home() {
                       } else if(toolName === "createMondayBoard") {
                         const {result} = toolInvocation
                         console.log(result.board)
-                        return <CreateBoard board={result.board} />
+                        return <CreateBoard key={Math.random()} board={result.board} />
                       }
                     } 
                     
