@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@ai-sdk/google": "^1.1.26",
     "@ai-sdk/openai": "^1.2.2",
     "@ai-sdk/react": "^1.1.22",
     "@ai-sdk/togetherai": "^0.1.15",
@@ -45,7 +46,8 @@
     "eslint-config-next": "15.2.2",
     "tailwindcss": "^4",
     "typescript": "^5"
-  } ,"optionalDependencies": {
+  },
+  "optionalDependencies": {
     "@tailwindcss/oxide-linux-x64-gnu": "^4.0.1",
     "lightningcss-linux-x64-gnu": "^1.29.1"
   }

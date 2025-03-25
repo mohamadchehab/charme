@@ -4,7 +4,6 @@ import { tool as createTool, StreamData } from 'ai';
 import { z } from 'zod';
 import { google } from "googleapis";
 import { cookies } from 'next/headers';
-import { runImage } from '@/app/actions';
 import mondayClient from '@/app/lib/monday-oauth';
 
 // Monday.com API helper function
@@ -245,24 +244,6 @@ data.close()
   }
 })
 
-export const imageGenerationTool = createTool({
-  description: 'Generate an image',
-  parameters: z.object({
-    topic: z.string().describe('The topic to generate the image about')
-}),
-execute: async function ({ topic }) {
-  try {
-    const image = await runImage(topic)
-
-    return {image: image}
-  } catch (error) {
-    return {
-      
-      error: `Could not generate : ${error instanceof Error ? error.message : String(error)}`
-    };
-  }
-}
-})
 
 
 export const dictionaryTool = createTool({
@@ -401,7 +382,6 @@ export const weatherTool = createTool({
   },
 });
 export const tools = {
-  generateImage: imageGenerationTool,
   displayWeather: weatherTool,
   calculate: calculatorTool,
   define: dictionaryTool,
