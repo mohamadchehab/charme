@@ -1,4 +1,7 @@
-# Charme Chat
+# Charme Chat - The integration-friendly, open-source AI chat
+
+
+https://github.com/user-attachments/assets/4f5b5178-1e4d-4ede-9375-9f0917b14902
 
 Charme Chat is the integration-friendly, open-source AI chat platform built with modern web technologies.
 
